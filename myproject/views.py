@@ -120,11 +120,6 @@ def upload_both_reports(request):
         })
 
     return render(request, 'upload_both_reports.html')
-
-
-
-
-
     
 
 def final_data_view(request):
