@@ -1,0 +1,98 @@
+
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'assets/reset-mail/css/bootstrap.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'assets/reset-mail/css/fontawesome-all.min.css' %}">
+
+<link rel="stylesheet" type="text/css" href="{% static 'assets/reset-mail/css/iofrm-style.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'assets/reset-mail/css/iofrm-theme16.css' %}">
+
+<div class="form-body without-side">
+    <div class="website-logo">
+        <a href="/">
+                <img src="{% static 'template1/images/newimagefolder/bni.jpg' %}" alt="">
+        </a>
+    </div>
+    <div class="row">
+        <div class="img-holder">
+            <div class="bg"></div>
+            <div class="info-holder">
+                <img src="{% static 'assets/reset-mail/images/graphic3.svg' %}" alt="">
+            </div>
+        </div>
+        <div class="form-holder">
+            <div class="form-content">
+                <div class="form-items">
+                    <h3>Upload Member Training Report File</h3>
+                    <form id="uploadForm" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input type="file" name="member_file" required>
+                        <h3>Upload Palms Report File</h3>
+                        <input type="file" name="palms_file" required>
+                        <button type="submit">Upload Both</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.querySelector('#uploadForm').onsubmit = function(event) {
+        event.preventDefault(); // Prevent form submission
+        
+        const formData = new FormData(this);
+
+        fetch(this.action, {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                Swal.fire({
+                    icon: 'success',
+                    title: data.message,
+                    showConfirmButton: false,
+                    timer: 2000
+                }).then(() => {
+                    Swal.fire({
+                        title: "Processing Data!",
+                        html: "Redirecting to data page...",
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        },
+                        willClose: () => {
+                            window.location.href = data.redirect_url;
+                        }
+                    });
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: data.message,
+                });
+            }
+        })
+        .catch(error => {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'An unexpected error occurred. Please try again.',
+            });
+        });
+    };
+</script>
+
+
+
+<script src="{% static 'assets/reset-mail/js/main.js' %}"></script>
+<script src="{% static 'assets/reset-mail/js/popper.min.js' %}"></script>
+<script src="{% static 'assets/reset-mail/js/bootstrap.min.js' %}"></script>
+<script data-cfasync="false" src="{% static '../../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js' %}"></script>
+<script src="{% static 'assets/reset-mail/js/jquery.min.js' %}"></script>
