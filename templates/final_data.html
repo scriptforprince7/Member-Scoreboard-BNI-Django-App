@@ -407,7 +407,7 @@ th:hover .tooltip-content {
                                {% elif item.Visitor_Score >= 3 %} background-color: grey; color: white;
                                {% else %} background-color: pink; color: black;
                                {% endif %}"
-                        data-bs-toggle="tooltip" title="{{ item.tooltip_data.Visitor_Score }}">
+                        data-bs-toggle="tooltip" title="{{ item.V_tooltip }}">
                         {{ item.Visitor_Score }}
                     </td>
         
@@ -422,7 +422,7 @@ th:hover .tooltip-content {
                                    {% else %} background-color: pink; color: black;
                                    {% endif %}
                                {% endwith %}"
-                        data-bs-toggle="tooltip" title="{{ item.tooltip_data.Referral_Score }}">
+                        data-bs-toggle="tooltip" title="{{ item.Referral_tooltip }}">
                         {{ item.Referral_Score }}
                     </td>
         
@@ -434,7 +434,7 @@ th:hover .tooltip-content {
                                {% elif item.TYFCB >= 500000 and item.TYFCB < 1000000 %} background-color: yellow; color: black;
                                {% else %} background-color: grey; color: white;
                                {% endif %}"
-                        data-bs-toggle="tooltip" title="{{ item.tooltip_data.TYFCB_Score }}">
+                        data-bs-toggle="tooltip" title="{{ item.TYFCB_tooltip }}">
                         {{ item.TYFCB_Score }}
                     </td>
         
@@ -487,15 +487,15 @@ th:hover .tooltip-content {
     
                     <h3>Scores:</h3>
                     <ul>
-                        <li><strong>Absent Score</strong>: <span id="modalAbsentScore" style="color: red;"></span> out of 15. Required Score : <b><span id="modalAbsentRequiredScore"></span></b> </li>
-                        <li><strong>Late Score</strong>: <span id="modalLateScore" style="color: red;"></span> out of 5. Required Score : <b><span id="modalLateRequiredScore"></span></b> </li>
-                        <li><strong>Visitors Score</strong>: <span id="modalVisitorScore" style="color: red;"></span> out of 20. Required Score : <b><span id="modalVisitorRequiredScore"></span></b> </li>
-                        <li><strong>Referral Score</strong>: <span id="modalReferralScore" style="color: red;"></span> out of 20. Required Score : <b><span id="modalReferralRequiredScore"></span></b> </li>
-                        <li><strong>TYFCB Score</strong>: <span id="modalTYFCBScore" style="color: red;"></span> out of 15. Required Score : <b><span id="modalTYFCBRequiredScore"></span></b> </li>
-                        <li><strong>Testimonial Score</strong>: <span id="modalTestimonialScore" style="color: red;"></span> out of 10. Required Score : <b>
+                        <li><strong>Absent Score</strong>: <span id="modalAbsentScore" style="color: red;"></span> out of 15.<span id="modalAbsentRequiredScore"></span> </li>
+                        <li><strong>Late Score</strong>: <span id="modalLateScore" style="color: red;"></span> out of 5.<span id="modalLateRequiredScore"></span> </li>
+                        <li><strong>Visitors Score</strong>: <span id="modalVisitorScore" style="color: red;"></span> out of 20.<span id="modalVisitorRequiredScore"></span> </li>
+                        <li><strong>Referral Score</strong>: <span id="modalReferralScore" style="color: red;"></span> out of 20.<span id="modalReferralRequiredScore"></span> </li>
+                        <li><strong>TYFCB Score</strong>: <span id="modalTYFCBScore" style="color: red;"></span> out of 15.<span id="modalTYFCBRequiredScore"></span> </li>
+                        <li><strong>Testimonial Score</strong>: <span id="modalTestimonialScore" style="color: red;"></span> out of 10.<b>
                             <span id="modalTestimonialRequiredScore"></span>
                         </b> </li>
-                        <li><strong>Training Score</strong>: <span id="modalTrainingScore" style="color: red;"></span> out of 15. Required Score : <b><span id="modalTrainingRequiredScore"></span></b> </li>
+                        <li><strong>Training Score</strong>: <span id="modalTrainingScore" style="color: red;"></span> out of 15.<b><span id="modalTrainingRequiredScore"></span></b> </li>
                     </ul>
                     <p><span id="modalNameFull" style="color: red;"></span> Scored <b><span id="modalTotalScore"></span></b> out of 100.</p>
                 </div>

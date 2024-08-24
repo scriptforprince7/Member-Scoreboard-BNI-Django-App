@@ -128,13 +128,95 @@ def final_data_view(request):
     palms_data = request.session.get('palms_data', [])
     chapter_name = request.session.get('chapter_name', 'N/A')  # Retrieve chapter name
 
+    total_referral_score = 0
+    total_tyfcb_score = 0
+    total_visitor_score = 0 
+
     for record in palms_data:
+        # Combine RGI and RGO for Referral_Score
+        rgi = record.get('RGI', 0)
+        rgo = record.get('RGO', 0)
+        referral_score = rgi + rgo
+        visitor = record.get('V', 0)
+        # record['Referral_Score'] = referral_score
+
+        total_referral_score += referral_score
+        total_tyfcb_score += record.get('TYFCB_Score', 0)
+        total_visitor_score += record.get('V', 0)
+
+        # Calculate tooltip for TYFCB_Score
+        tyfcb = record.get('TYFCB', 0)
+        if tyfcb >= 2000000:
+            record['TYFCB_tooltip'] = "You are a star ⭐"
+        elif 1000000 <= tyfcb < 2000000:
+            record['TYFCB_tooltip'] = f"You need {2000000 - tyfcb} tyfcb value more to achieve 15 points."
+        elif 500000 <= tyfcb < 1000000:
+            record['TYFCB_tooltip'] = (
+                f"You need {2000000 - tyfcb} tyfcb value more to achieve 15 points and "
+                f"{1000000 - tyfcb} tyfcb value more to achieve 10 points."
+            )
+        else:
+            record['TYFCB_tooltip'] = (
+                f"You need {2000000 - tyfcb} tyfcb value more to achieve 15 points, "
+                f"{1000000 - tyfcb} tyfcb value more to achieve 10 points, and "
+                f"{500000 - tyfcb} tyfcb value more to achieve 5 points."
+            )
+
+        # Calculate tooltip for V score
+        visitor = record.get('V', 0)
+        if visitor >= 20:
+            record['V_tooltip'] = "You are a star ⭐"
+        elif 13 <= visitor < 20:
+            record['V_tooltip'] = f"You need {20 - visitor} more to achieve 20 points."
+        elif 7 <= visitor < 13:
+            record['V_tooltip'] = (
+                f"You need {20 - visitor} more to achieve 15 points and "
+                f"{13 - visitor} more to achieve 10 points."
+            )
+        elif 3 <= visitor < 7:
+            record['V_tooltip'] = (
+                f"You need {20 - visitor} more to achieve 15 points, "
+                f"{13 - visitor} more to achieve 10 points, and "
+                f"{7 - visitor} more to achieve 5 points."
+            )
+        else:
+            record['V_tooltip'] = (
+                f"You need {20 - visitor} more to achieve 15 points, "
+                f"{13 - visitor} more to achieve 10 points, "
+                f"{7 - visitor} more to achieve 5 points, and "
+                f"{3 - visitor} more to achieve 0 points."
+            )
+
+
+        # Calculate tooltip for combined Referral_Score
+        if referral_score >= 32:
+            record['Referral_tooltip'] = "You are a star ⭐"
+        elif 26 <= referral_score < 32:
+            record['Referral_tooltip'] = f"You need {32 - referral_score} referrals more to achieve 20 points."
+        elif 20 <= referral_score < 26:
+            record['Referral_tooltip'] = (
+                f"You need {32 - referral_score} referrals more to achieve 20 points and "
+                f"{26 - referral_score} referrals more to achieve 15 points."
+            )
+        elif 13 <= referral_score < 20:
+            record['Referral_tooltip'] = (
+                f"You need {32 - referral_score} referrals more to achieve 20 points, "
+                f"{26 - referral_score} referrals more to achieve 15 points, and "
+                f"{20 - referral_score} referrals more to achieve 10 points."
+            )
+        else:
+            record['Referral_tooltip'] = (
+                f"You need {32 - referral_score} referrals more to achieve 20 points, "
+                f"{26 - referral_score} referrals more to achieve 15 points, "
+                f"{20 - referral_score} referrals more to achieve 10 points, and "
+                f"{13 - referral_score} referrals more to achieve 5 points."
+            )
+
+        # Add other tooltips
         highest_points = {
             'Absent_Score': 15,
             'Late_Score': 5,
-            'Referral_Score': 20,
             'Visitor_Score': 20,
-            'TYFCB_Score': 15,
             'Testimonial_Score': 10,
             'training_Score': 15
         }
@@ -156,9 +238,14 @@ def final_data_view(request):
         'member_data': member_data,
         'palms_data': palms_data,
         'chapter_name': chapter_name,  # Include chapter name in context
+        'total_referral_score': total_referral_score,  # Store total referral score
+        'total_tyfcb_score': total_tyfcb_score,
     }
 
     return render(request, 'final_data.html', context)
+
+
+
 
 
 
